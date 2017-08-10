@@ -42,6 +42,11 @@ function! jasmine_test_runner#Run() abort
     else
         " The test file is next to the file.
         let l:test_filename = substitute(l:filename, '\.ts$', '.unit.spec.ts', '')
+
+        " Remove .component from test filenames, if needed.
+        if l:test_filename =~# '\.component' && !filereadable(l:test_filename)
+            let l:test_filename = substitute(l:test_filename, '\.component', '', '')
+        endif
     endif
 
     if !filereadable(l:test_filename)
